@@ -20,8 +20,8 @@ ZSH_THEME_GIT_PROMPT_DIRTY="$YS_VCS_PROMPT_DIRTY"
 ZSH_THEME_GIT_PROMPT_CLEAN="$YS_VCS_PROMPT_CLEAN"
 
 # HG info
-local hg_info='$(ys_hg_prompt_info)'
-ys_hg_prompt_info() {
+local hg_info='$(ddl_hg_prompt_info)'
+ddl_hg_prompt_info() {
 	# make sure this is a hg dir
 	if [ -d '.hg' ]; then
 		echo -n "${YS_VCS_PROMPT_PREFIX1}hg${YS_VCS_PROMPT_PREFIX2}"
