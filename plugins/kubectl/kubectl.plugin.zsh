@@ -1,7 +1,7 @@
 if (( $+commands[kubectl] )); then
     __KUBECTL_COMPLETION_FILE="${ZSH_CACHE_DIR}/kubectl_completion"
 
-    if [[ ! -f $__KUBECTL_COMPLETION_FILE ]]; then
+    if [[ ! -f $__KUBECTL_COMPLETION_FILE || ! -s $__KUBECTL_COMPLETION_FILE ]]; then
         kubectl completion zsh >! $__KUBECTL_COMPLETION_FILE
     fi
 
@@ -46,6 +46,9 @@ alias kdelp='kubectl delete pods'
 
 # get pod by label: kgpl "app=myapp" -n myns
 alias kgpl='kgp -l'
+
+# get pod by namespace: kgpn kube-system"
+alias kgpn='kgp -n'
 
 # Service management.
 alias kgs='kubectl get svc'
@@ -147,3 +150,13 @@ alias kepvc='kubectl edit pvc'
 alias kdpvc='kubectl describe pvc'
 alias kdelpvc='kubectl delete pvc'
 
+# Only run if the user actually has kubectl installed
+if (( ${+_comps[kubectl]} )); then
+  kj() { kubectl "$@" -o json | jq; }
+  kjx() { kubectl "$@" -o json | fx; }
+  ky() { kubectl "$@" -o yaml | yh; }
+
+  compdef kj=kubectl
+  compdef kjx=kubectl
+  compdef ky=kubectl
+fi
