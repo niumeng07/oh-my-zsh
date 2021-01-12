@@ -31,11 +31,15 @@ function work_in_progress() {
 
 # Check if main exists and use instead of master
 function git_main_branch() {
-  if [[ -n "$(git branch --list main)" ]]; then
-    echo main
-  else
-    echo master
-  fi
+  command git rev-parse --git-dir &>/dev/null || return
+  local branch
+  for branch in main trunk; do
+    if command git show-ref -q --verify refs/heads/$branch; then
+      echo $branch
+      return
+    fi
+  done
+  echo master
 }
 
 #
@@ -232,6 +236,7 @@ alias grrm='git remote remove'
 alias grs='git restore'
 alias grset='git remote set-url'
 alias grss='git restore --source'
+alias grst='git restore --staged'
 alias grt='cd "$(git rev-parse --show-toplevel || echo .)"'
 alias gru='git reset --'
 alias grup='git remote update'
